@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo de Productos</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+
+body{
+  background:#6b6b6b;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+  background-size:40px 40px;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:28px;
+  padding:50px 20px 60px;
+  font-family:'Roboto',sans-serif;
+}
+.page{
+  width:210mm;height:297mm;page-break-after:always;break-after:page;
+  background:#fff;
+  box-shadow:0 0 0 1px rgba(0,0,0,.15),0 4px 16px rgba(0,0,0,.25),0 20px 60px rgba(0,0,0,.35);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.header{background:#1c1c1c;flex-shrink:0;}
+.hazard-stripe{
+  height:10px;
+  background:repeating-linear-gradient(-55deg,#F5A623 0,#F5A623 10px,#1c1c1c 10px,#1c1c1c 20px);
+}
+.header-content{
+  display:flex;align-items:center;
+  padding:11px 16px;gap:14px;
+}
+.logo-area{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.logo-badge{
+  width:46px;height:46px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.brand-text .name{
+  font-family:'Oswald',sans-serif;font-size:14.5px;font-weight:700;
+  letter-spacing:.01em;text-transform:uppercase;white-space:nowrap;
+}
+.brand-text .name .duran{color:#F5A623;}
+.brand-text .name .tools{color:#fff;}
+.brand-text .tagline{font-size:6.5px;color:#999;letter-spacing:.12em;text-transform:uppercase;margin-top:2px;font-weight:500;white-space:nowrap;}
+.header-divider{width:1px;align-self:stretch;background:rgba(255,255,255,.2);flex-shrink:0;}
+.catalog-title{
+  flex:1;font-family:'Oswald',sans-serif;font-weight:600;font-size:16px;
+  color:#fff;letter-spacing:.05em;text-transform:uppercase;
+}
+.year-pill{
+  background:#F5A623;color:#1c1c1c;
+  font-family:'Oswald',sans-serif;font-weight:700;
+  font-size:10px;padding:4px 12px;border-radius:3px;letter-spacing:.08em;flex-shrink:0;
+}
+.grid-area{
+  flex:1;padding:7px;background:#dedad4;
+  display:flex;min-height:0;
+}
+.grid { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 2px; background: #a09b93; border-radius: 4px; overflow: hidden; border: 2px solid #a09b93; height: 100%; }
+.card{
+  background:#fff;display:flex;flex-direction:column;
+  overflow:hidden;transition:all .18s ease;
+}
+.card:hover{z-index:3;transform:scale(1.018);box-shadow:0 8px 28px rgba(0,0,0,.22);}
+.img-zone{
+  flex:1;position:relative;
+  background:#f8f7f5;border-bottom:1px solid #ececec;
+  display:flex;align-items:center;justify-content:center;
+  padding:10px;min-height:0;overflow:hidden;
+}
+.img-zone img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; color: transparent; }
+.sku{
+  position:absolute;top:6px;left:6px;
+  background:#1c1c1c;color:#F5A623;
+  font-family:'Oswald',sans-serif;font-size:8.5px;font-weight:600;
+  padding:2px 6px;border-radius:2px;letter-spacing:.06em;z-index:1;
+}
+.card-body{
+  flex-shrink:0;padding:7px 9px 0;
+  display:flex;flex-direction:column;gap:4px;
+}
+.prod-name{
+  font-family:'Oswald',sans-serif;font-weight:500;
+  font-size:10.5px;color:#1c1c1c;line-height:1.35;
+  white-space:pre-line;
+}
+.dash-line{
+  height:1px;
+  background:#e2dfd9;
+}
+.meta-row{display:flex;align-items:center;gap:4px;font-size:9px;}
+.lbl{color:#aaa;font-weight:300;}
+.val{color:#333;font-weight:500;}
+.price-strip{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 0 7px;margin:0 -9px 0;
+}
+.price-left{display:flex;align-items:center;gap:5px;padding-left:9px;}
+.cart-icon{font-size:12px;line-height:1;color:#8a8a8a;}
+.price-lbl{font-size:7.2px;color:#bbb;letter-spacing:.1em;text-transform:uppercase;font-weight:500;}
+.price-num{
+  font-family:'Oswald',sans-serif;font-weight:700;font-size:15.5px;color:#1c1c1c;
+  background:#F5A623;padding:5px 11px 5px 17px;
+  clip-path:polygon(10px 0,100% 0,100% 100%,0 100%);
+}
+.footer{
+  background:#fff;
+  padding:12px 40px;display:flex;align-items:center;gap:14px;flex-shrink:0;
+}
+.footer-line{flex:1;height:1px;background:#d4d1cb;}
+.footer-text{font-size:7.5px;color:#999;letter-spacing:.12em;text-transform:uppercase;font-weight:500;white-space:nowrap;}
+.footer-text strong{color:#F5A623;font-weight:700;}
+
+/* --- CORRECCIÓN DEFINITIVA PARA PRODUCTOS SIN IMAGEN --- */
+
+/* Recuadro interno gris cuando no hay foto */
+.sin-foto-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #a5a5a5;
+    gap: 2px;
+}
+.sin-foto-icono {
+    font-size: 20px; /* Tamaño del emoticón de cámara */
+}
+.sin-foto-texto {
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.sin-foto-url {
+    font-size: 6.5px;
+    color: #c0392b;
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    margin-top: 1px;
+}
+
+/* ── Etiqueta de categoría en tarjeta ── */
+.cat-badge{
+  position:absolute;top:6px;right:6px;
+  background:#F5A623;color:#1c1c1c;
+  font-family:'Oswald',sans-serif;font-size:6.5px;font-weight:700;
+  padding:2px 6px;border-radius:2px;letter-spacing:.05em;
+  text-transform:uppercase;z-index:1;max-width:90px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+/* ── Separador de sección entre categorías ── */
+.section-divider{
+  flex-shrink:0;
+  display:flex;align-items:center;gap:8px;
+  padding:5px 10px 4px;
+  background:#fff;
+  border-bottom:1px solid #e8e4de;
+}
+.section-divider .orden-pill{
+  background:#F5A623;color:#1c1c1c;
+  font-family:'Oswald',sans-serif;font-weight:700;
+  font-size:9px;padding:2px 8px;border-radius:3px;flex-shrink:0;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+.section-divider .cat-name{
+  font-family:'Oswald',sans-serif;font-weight:600;
+  font-size:9px;color:#555;letter-spacing:.05em;text-transform:uppercase;
+}
+
+/* Forzar a que la zona de la imagen sea la que se adapte y reduzca su tamaño */
+.img-zone {
+    flex: 1 !important;
+    min-height: 0 !important;
+}
+@media print{
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important;}
+  body{background:#fff;padding:0;display:block;}
+  .page{box-shadow:none;width:210mm;height:297mm;margin:0;page-break-after:always;break-after:page;}
+  .page:last-of-type{page-break-after:auto;break-after:auto;}
+}
+@media print {
+    .no-print { display: none !important; }
+  }
+
+
+/* ── Botón exportar PDF ── */
+#btn-exportar-pdf {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  background: #F5A623;
+  color: #1c1c1c;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: .06em;
+  padding: 14px 26px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(0,0,0,.35);
+  display: none;
+  align-items: center;
+  gap: 10px;
+  transition: background .15s, transform .1s;
+}
+#btn-exportar-pdf:hover { background: #e09410; transform: translateY(-2px); }
+#btn-exportar-pdf:active { transform: scale(.97); }
+#pdf-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 99999;
+  background: rgba(28,28,28,.82);
+  align-items: center; justify-content: center;
+  flex-direction: column; gap: 18px;
+  font-family: 'Oswald', sans-serif; color: #fff;
+}
+#pdf-overlay.visible { display: flex; }
+#pdf-progress-bar-wrap {
+  width: 320px; height: 10px;
+  background: rgba(255,255,255,.15);
+  border-radius: 5px; overflow: hidden;
+}
+#pdf-progress-bar {
+  height: 100%; width: 0%;
+  background: #F5A623;
+  border-radius: 5px;
+  transition: width .2s;
+}
+#pdf-status { font-size: 14px; color: #ccc; letter-spacing:.05em; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-content">
+      <div class="logo-area">
+        <div class="logo-badge"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="brand-text">
+          <div class="name"><span class="duran">DURAN</span><span class="tools">TOOLS</span></div>
+          <div class="tagline">Herramientas a tu alcance</div>
+        </div>
+      </div>
+      <div class="header-divider"></div>
+      <div class="catalog-title">Catálogo de Productos</div>
+      <div class="year-pill">2026</div>
+    </div>
+    <div class="hazard-stripe"></div>
+  </div>
+  
+  <div class="no-print" style="background: #fff; padding: 15px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <label style="font-family: 'Oswald', sans-serif; font-size: 16px; margin-right: 10px;">
+        Cargar base de productos CSV: 
+    </label>
+    <input type="file" id="csvFileInput" accept=".csv">
+  </div>
+  <div class="grid-area">
+    <div class="grid">
+      <!-- Los productos se cargarán aquí -->
+    </div>
+  </div>
+  <div class="footer">
+    <span class="footer-line"></span>
+    <span class="footer-text"><strong>DURANTOOLS</strong> Herramientas a tu alcance</span>
+    <span class="footer-line"></span>
+  </div>
+</div>
+<script>
+const PRODUCTOS_POR_PAGINA = 9;
+let csvDataGlobal = null;
+
+function escaparHTML(valor) {
+  return String(valor ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+function parsearCSVRobusto(linea, sep) {
+  const columnas = [];
+  let actual = '';
+  let dentroDeComillas = false;
+  for (let i = 0; i < linea.length; i++) {
+    const c = linea[i];
+    if (c === '"') {
+      if (dentroDeComillas && linea[i+1] === '"') { actual += '"'; i++; }
+      else { dentroDeComillas = !dentroDeComillas; }
+    } else if (c === sep && !dentroDeComillas) {
+      columnas.push(actual); actual = '';
+    } else { actual += c; }
+  }
+  columnas.push(actual);
+  return columnas;
+}
+
+function normalizarUrlImagen(raw) {
+  let url = (raw || '').trim().replace(/^["']|["']$/g, '').trim();
+  if (!url) return '';
+  let gdrive = url.match(/drive\.google\.com\/file\/d\/([^/]+)/) || url.match(/[?&]id=([^&]+)/);
+  if (url.includes('drive.google.com') && gdrive) return `https://drive.google.com/uc?export=view&id=${gdrive[1]}`;
+  if (url.includes('dropbox.com')) { url = url.replace('?dl=0','?raw=1').replace('?dl=1','?raw=1'); if (!url.includes('raw=1')) url += (url.includes('?') ? '&' : '?') + 'raw=1'; }
+  if (url.startsWith('//')) url = 'https:' + url;
+  else if (/^www\./i.test(url)) url = 'https://' + url;
+  return url;
+}
+
+function manejarErrorImagen(img) {
+  img.style.display = 'none';
+  const urlIntentada = img.getAttribute('data-url-original') || img.src;
+  const box = document.createElement('div');
+  box.className = 'sin-foto-box';
+  box.innerHTML = `<span class="sin-foto-icono">📷</span><span class="sin-foto-texto">Error Link</span><span class="sin-foto-url" title="${escaparHTML(urlIntentada)}">${escaparHTML(urlIntentada)}</span>`;
+  if (img.parentElement) img.parentElement.appendChild(box);
+}
+
+function crearTarjetaProducto(p) {
+  let url = normalizarUrlImagen(p.imagenUrl);
+  let imgHTML = url && (url.toLowerCase().startsWith('http') || url.startsWith('data:image'))
+    ? `<img src="${url}" referrerpolicy="no-referrer" data-url-original="${escaparHTML(url)}" onerror="manejarErrorImagen(this)">`
+    : `<div class="sin-foto-box"><span class="sin-foto-icono">📷</span><span class="sin-foto-texto">Sin Imagen</span></div>`;
+  const catLabel = p.categoria || (p._ordenResuelto && NOMBRES_CATS[p._ordenResuelto]) || p._ordenResuelto || '';
+  const catBadge = catLabel ? `<span class="cat-badge">${escaparHTML(catLabel)}</span>` : '';
+  return `
+    <div class="card">
+      <div class="img-zone"><span class="sku"># ${escaparHTML(p.referencia || p.id)}</span>${catBadge}${imgHTML}</div>
+      <div class="card-body">
+        <div class="prod-name">${escaparHTML(p.nombre)}</div>
+        <div class="meta-row"><span class="lbl">Ref:</span> <span class="val">${escaparHTML(p.referencia)}</span></div>
+        <div class="dash-line"></div>
+        ${_precioKeyActual === '__SIN_PRECIO__' ? '' : `<div class="price-strip"><div class="price-left"><span class="cart-icon">🛒</span><div class="price-lbl">PRECIO</div></div><div class="price-num">$ ${escaparHTML(p.precio)}</div></div>`}
+      </div>
+    </div>`;
+}
+
+function crearTarjetaVacia() {
+  return `<div class="card" style="background:#f8f7f5;opacity:0.3;"><div class="img-zone">📦</div><div class="card-body"></div></div>`;
+}
+
+// ── LOGO HTML reutilizable ──────────────────────────────────────────
+function logoHTML() {
+  return document.querySelector('.logo-badge').outerHTML;
+}
+
+// ── PASO 1: leer CSV y mostrar selector de precio ──────────────────
+function leerCSVYMostrarSelector(csvData) {
+  csvDataGlobal = csvData;
+
+  const filas = csvData.replace(/^\uFEFF/, '').split(/\r?\n/).filter(f => f.trim() !== '');
+  if (filas.length < 1) return;
+  const primeraLinea = filas[0];
+  const sep = (primeraLinea.match(/;/g)||[]).length > (primeraLinea.match(/,/g)||[]).length ? ';' : ',';
+  const encabezados = parsearCSVRobusto(primeraLinea, sep).map(h => h.trim().toLowerCase());
+
+  // Precios disponibles en el CSV
+  const PRECIOS = [
+    { label: 'Lista 1',                   key: 'precio1' },
+    { label: 'Lista 2',                   key: 'precio2' },
+    { label: 'Lista 3',                   key: 'precio3' },
+    { label: 'Lista 4',                   key: 'precio4' },
+    { label: 'Precio Venta con Impuesto', key: 'precioventa_con_impuesto' },
+  ];
+
+  const disponibles = PRECIOS.filter(p => encabezados.some(h => h.includes(p.key)));
+  const todosLosPrecios = disponibles.length > 0 ? disponibles : PRECIOS;
+
+  const logoBadge = document.querySelector('.logo-badge').outerHTML;
+
+  document.body.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#6b6b6b;
+      background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+      background-size:40px 40px;padding:40px 20px;font-family:'Roboto',sans-serif;">
+      <div style="background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);max-width:480px;width:100%;">
+        <!-- Header mini -->
+        <div style="background:#1c1c1c;padding:14px 20px;display:flex;align-items:center;gap:12px;">
+          ${logoBadge}
+          <div>
+            <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;letter-spacing:.01em;">
+              <span style="color:#F5A623;">DURAN</span><span style="color:#fff;">TOOLS</span>
+            </div>
+            <div style="font-size:6.5px;color:#999;letter-spacing:.12em;text-transform:uppercase;margin-top:2px;">Herramientas a tu alcance</div>
+          </div>
+        </div>
+        <div style="height:8px;background:repeating-linear-gradient(-55deg,#F5A623 0,#F5A623 10px,#1c1c1c 10px,#1c1c1c 20px);"></div>
+
+        <!-- Contenido -->
+        <div style="padding:28px 28px 32px;">
+          <div style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:#1c1c1c;margin-bottom:6px;">
+            ✅ CSV cargado correctamente
+          </div>
+          <div style="font-size:12px;color:#888;margin-bottom:24px;">
+            ${filas.length - 1} productos encontrados. Selecciona qué precio quieres mostrar en el catálogo:
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;" id="btnPrecio">
+            ${todosLosPrecios.map(p => `
+              <button onclick="generarCatalogo('${p.key}')"
+                style="background:#1c1c1c;color:#fff;border:none;border-radius:6px;padding:13px 18px;
+                  font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;letter-spacing:.05em;
+                  cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+                  transition:background .15s;"
+                onmouseover="this.style.background='#F5A623';this.style.color='#1c1c1c';"
+                onmouseout="this.style.background='#1c1c1c';this.style.color='#fff';">
+                <span>🏷 ${p.label}</span>
+                <span style="font-size:10px;opacity:.6;text-transform:uppercase;letter-spacing:.1em;">${p.key}</span>
+              </button>`).join('')}
+          </div>
+
+          <!-- Botón catálogo sin precio -->
+          <div style="margin-top:14px;">
+            <button onclick="generarCatalogo('__SIN_PRECIO__')"
+              style="width:100%;background:#444;color:#fff;border:none;border-radius:6px;padding:13px 18px;
+                font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;letter-spacing:.05em;
+                cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+                transition:background .15s;"
+              onmouseover="this.style.background='#666';"
+              onmouseout="this.style.background='#444';">
+              <span>🚫 Sin precio</span>
+              <span style="font-size:10px;opacity:.6;text-transform:uppercase;letter-spacing:.1em;">ocultar precio</span>
+            </button>
+          </div>
+
+          <div style="margin-top:20px;border-top:1px solid #eee;padding-top:16px;text-align:center;">
+            <label style="font-size:11px;color:#aaa;cursor:pointer;text-decoration:underline;">
+              ↩ Cargar otro CSV
+              <input type="file" accept=".csv" style="display:none;" onchange="handleFile(event)">
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── PASO 2: generar catálogo con el precio elegido ─────────────────
+let _precioKeyActual = "";
+function generarCatalogo(precioKey) {
+  _precioKeyActual = precioKey;
+  const csvData = csvDataGlobal;
+  const filas = csvData.replace(/^\uFEFF/, '').split(/\r?\n/).filter(f => f.trim() !== '');
+  const primeraLinea = filas[0];
+  const sep = (primeraLinea.match(/;/g)||[]).length > (primeraLinea.match(/,/g)||[]).length ? ';' : ',';
+  const encabezados = parsearCSVRobusto(primeraLinea, sep).map(h => h.trim().toLowerCase());
+
+  let iId  = encabezados.findIndex(h => h.includes('id producto') || h.includes('id_no_editar'));
+  let iNom = encabezados.findIndex(h => h.includes('nombre'));
+  let iRef = encabezados.findIndex(h => h.includes('referencia'));
+  let iPre = encabezados.findIndex(h => h.includes(precioKey));
+  let iImg = encabezados.findIndex(h => h.includes('imagen') || h.includes('url') || h.includes('foto'));
+  let iCat = encabezados.findIndex(h => h.includes('categoria') || h.includes('categoría') || h.includes('category'));
+  let iOrd = encabezados.findIndex(h => h === 'orden' || h === 'order');
+
+  if (iId===-1) iId=1; if (iNom===-1) iNom=2; if (iRef===-1) iRef=5; if (iPre===-1) iPre=11;
+
+  const ORDEN_CATS = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P'];
+  const NOMBRES_CATS = {
+    'A': 'HERRAMIENTA MANUAL',
+    'B': 'ACCESORIOS PARA HERRAMIENTAS',
+    'C': 'HERRAMIENTA AUTOMOTRIZ',
+    'D': 'ILUMINACION',
+    'E': 'ELECTRICIDAD,CABLES Y ALAMBRES',
+    'F': 'AGRO',
+    'G': 'PEGAMENTOS Y AHDESIVOS',
+    'H': 'PINTURAS Y APLICACIÓN',
+    'I': 'HERRAJES Y ACCESORIOS',
+    'J': 'GRAMERAS',
+    'K': 'PLOMERIA Y ACCESORIOS',
+    'L': 'ACCESORIOS PARA EL HOGAR',
+    'M': 'HERRAJES Y HERRAMIENTAS PARA VIDRIO Y ALUMINIO',
+    'N': 'SEGURIDAD INDUSTRIAL.',
+    'Ñ': 'SEGURIDAD Y ACCESORIOS',
+    'O': 'ACCESORIOS MOTO Y BICICLETA',
+    'P': 'General',
+  };
+
+  const productos = [];
+  for (let i = 1; i < filas.length; i++) {
+    const cols = parsearCSVRobusto(filas[i], sep);
+    if (cols.length <= iNom || !cols[iNom]) continue;
+    let pRaw = (cols[iPre] || '').toLowerCase().replace('null','').replace(/[$\s]/g,'').trim();
+    let precioFormateado = '0';
+    if (precioKey !== '__SIN_PRECIO__' && pRaw !== '') {
+      let valorLimpio = pRaw.trim().replace(/\./g,'').replace(',','.');
+      let valorNumerico = parseFloat(valorLimpio);
+      if (!isNaN(valorNumerico)) {
+        valorNumerico = Math.round(valorNumerico / 100) * 100;
+        precioFormateado = valorNumerico.toLocaleString('es-CO');
+      } else {
+        precioFormateado = pRaw;
+      }
+    }
+    let rawImg = cols[iImg] || '';
+    if (rawImg.trim() !== '' && !isNaN(rawImg.trim())) rawImg = '';
+    const orden = iOrd !== -1 ? (cols[iOrd]||'').trim().toUpperCase() : '';
+    const categoria = iCat !== -1 ? (cols[iCat]||'').trim() : '';
+    productos.push({ id: cols[iId]||'', nombre: cols[iNom]||'', referencia: cols[iRef]||'',
+      precio: precioFormateado, imagenUrl: rawImg.trim(), orden, categoria });
+  }
+
+  const tieneCategoria = iOrd !== -1 || iCat !== -1;
+
+  // Mapa inverso: nombre completo -> letra de orden
+  const NOMBRE_A_ORDEN = {};
+  for (const [letra, nombre] of Object.entries(NOMBRES_CATS)) {
+    NOMBRE_A_ORDEN[nombre.toUpperCase()] = letra;
+  }
+
+  // Normaliza texto: quita tildes, puntos, espacios extra y pasa a mayúsculas
+  function normCat(s) {
+    return (s||'').toUpperCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[.,]/g,'').replace(/\s+/g,' ').trim();
+  }
+  // Mapa inverso normalizado
+  const NOMBRE_A_ORDEN_NORM = {};
+  for (const [letra, nombre] of Object.entries(NOMBRES_CATS)) {
+    NOMBRE_A_ORDEN_NORM[normCat(nombre)] = letra;
+  }
+
+  function obtenerLetraOrden(p) {
+    // 1. Columna Orden con letra directa (A, B, C...)
+    if (p.orden && ORDEN_CATS.includes(p.orden)) return p.orden;
+    // 2. Columna Orden con nombre completo (normalizado)
+    if (p.orden) { const l = NOMBRE_A_ORDEN_NORM[normCat(p.orden)]; if (l) return l; }
+    // 3. Columna Categoria con nombre completo (normalizado)
+    if (p.categoria) { const l = NOMBRE_A_ORDEN_NORM[normCat(p.categoria)]; if (l) return l; }
+    // 4. Categoría desconocida -> al final
+    return null;
+  }
+
+  if (tieneCategoria) {
+    // Paso 1: asignar letra de orden a todos primero
+    for (const p of productos) {
+      p._ordenResuelto = obtenerLetraOrden(p) || (p.orden || p.categoria || '?');
+    }
+    // Paso 2: ordenar por categoría y dentro de cada categoría A-Z por nombre
+    productos.sort((a, b) => {
+      const ia = ORDEN_CATS.indexOf(a._ordenResuelto) !== -1 ? ORDEN_CATS.indexOf(a._ordenResuelto) : 999;
+      const ib = ORDEN_CATS.indexOf(b._ordenResuelto) !== -1 ? ORDEN_CATS.indexOf(b._ordenResuelto) : 999;
+      if (ia !== ib) return ia - ib;
+      // Misma categoría → A-Z por nombre
+      return a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' });
+    });
+  } else {
+    // Sin categoría → solo A-Z por nombre
+    productos.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' }));
+  }
+
+  const grupos = [];
+  let grupoActual = null;
+  for (const p of productos) {
+    const key = p._ordenResuelto || p.orden || p.categoria || '__SIN_CAT__';
+    if (!grupoActual || grupoActual.key !== key) {
+      grupoActual = { key, items: [] };
+      grupos.push(grupoActual);
+    }
+    grupoActual.items.push(p);
+  }
+
+  const LOGO_SRC = document.querySelector('.logo-badge img')?.src || '';
+  const logoTag = `<div class="logo-badge"><img src="${LOGO_SRC}" style="width:100%;height:100%;object-fit:contain;"></div>`;
+
+  // ── Paginación continua: sin huecos entre categorías ──────────────
+  // Todos los productos en flujo seguido; solo la última página se rellena.
+  const totalPaginas = Math.ceil(productos.length / PRODUCTOS_POR_PAGINA);
+
+  let finalHTML = '';
+  let numPag = 0;
+
+  function crearPagina(cardsHTML, catHeader) {
+    numPag++;
+    const divCat = catHeader
+      ? `<div class="section-divider"><span class="orden-pill">${escaparHTML(catHeader.orden)}</span><span class="cat-name">${escaparHTML(catHeader.nombre)}</span></div>`
+      : '';
+    return `
+      <div class="page">
+        <div class="header"><div class="header-content"><div class="logo-area">${logoTag}<div class="brand-text"><div class="name"><span class="duran">DURAN</span><span class="tools">TOOLS</span></div><div class="tagline">Herramientas a tu alcance</div></div></div><div class="header-divider"></div><div class="catalog-title">Catálogo de Productos</div><div class="year-pill">2026</div></div><div class="hazard-stripe"></div></div>
+        ${divCat}
+        <div class="grid-area"><div class="grid">${cardsHTML}</div></div>
+        <div class="footer"><span class="footer-line"></span><span class="footer-text"><strong>DURANTOOLS</strong> Herramientas a tu alcance</span><span class="footer-line"></span><span class="footer-text" style="margin-left:12px;">Pág. <strong>${numPag}</strong> / <strong>${totalPaginas}</strong></span></div>
+      </div>`;
+  }
+
+  // ── Flujo continuo: sin huecos, categoría indicada en esquina ──
+  for (let pag = 0; pag < totalPaginas; pag++) {
+    const inicio = pag * PRODUCTOS_POR_PAGINA;
+    let prodsPag = productos.slice(inicio, inicio + PRODUCTOS_POR_PAGINA);
+
+    let cardsHTML = prodsPag.map(crearTarjetaProducto).join('');
+    // Rellenar solo la última página
+    if (pag === totalPaginas - 1) {
+      while (prodsPag.length < PRODUCTOS_POR_PAGINA) { cardsHTML += crearTarjetaVacia(); prodsPag.push(null); }
+    }
+
+    // Mostrar categoría del primer producto de la página en el divisor
+    let catHeader = null;
+    if (tieneCategoria && prodsPag[0]) {
+      const keyActual = prodsPag[0]._ordenResuelto || prodsPag[0].orden || prodsPag[0].categoria || '';
+      if (keyActual) {
+        catHeader = { orden: keyActual, nombre: NOMBRES_CATS[keyActual] || prodsPag[0].categoria || keyActual };
+      }
+    }
+
+    finalHTML += crearPagina(cardsHTML, catHeader);
+  }
+
+  document.body.innerHTML = finalHTML || '<h1>No se encontraron productos.</h1>';
+
+  // Reinyectar botón PDF y overlay después de reemplazar el body
+  const _btnPDF = document.createElement('button');
+  _btnPDF.id = 'btn-exportar-pdf';
+  _btnPDF.onclick = exportarPDF;
+  _btnPDF.innerHTML = '&#11015; Descargar PDF Optimizado';
+  _btnPDF.style.cssText = `
+    position:fixed;bottom:28px;right:28px;z-index:9999;
+    background:#F5A623;color:#1c1c1c;
+    font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;
+    letter-spacing:.06em;padding:14px 26px;border:none;border-radius:8px;
+    cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.35);
+    display:flex;align-items:center;gap:10px;`;
+  _btnPDF.onmouseover = () => { _btnPDF.style.background='#e09410'; _btnPDF.style.transform='translateY(-2px)'; };
+  _btnPDF.onmouseout  = () => { _btnPDF.style.background='#F5A623'; _btnPDF.style.transform='none'; };
+  document.body.appendChild(_btnPDF);
+
+  const _overlay = document.createElement('div');
+  _overlay.id = 'pdf-overlay';
+  _overlay.style.cssText = `
+    display:none;position:fixed;inset:0;z-index:99999;
+    background:rgba(28,28,28,.82);align-items:center;justify-content:center;
+    flex-direction:column;gap:18px;font-family:'Oswald',sans-serif;color:#fff;`;
+  _overlay.innerHTML = `
+    <div style="font-size:22px;font-weight:700;letter-spacing:.08em;">Generando PDF...</div>
+    <div style="width:320px;height:10px;background:rgba(255,255,255,.15);border-radius:5px;overflow:hidden;">
+      <div id="pdf-progress-bar" style="height:100%;width:0%;background:#F5A623;border-radius:5px;transition:width .2s;"></div>
+    </div>
+    <div id="pdf-status" style="font-size:14px;color:#ccc;letter-spacing:.05em;">Procesando...</div>
+    <div style="font-size:11px;color:#aaa;margin-top:4px;">No cierres esta pestaña</div>`;
+  document.body.appendChild(_overlay);
+}
+
+function handleFile(e) {
+  const f = e.target.files[0];
+  if (f) { const l = new FileReader(); l.onload = ev => leerCSVYMostrarSelector(ev.target.result); l.readAsText(f, 'UTF-8'); }
+}
+
+document.getElementById('csvFileInput').addEventListener('change', handleFile);
+</script>
+
+
+
+<!-- Botón PDF flotante -->
+<button id="btn-exportar-pdf" onclick="exportarPDF()" style="display:none;">
+  ⬇ Descargar PDF Optimizado
+</button>
+
+<!-- Overlay de progreso -->
+<div id="pdf-overlay">
+  <div style="font-size:22px;font-weight:700;letter-spacing:.08em;">Generando PDF...</div>
+  <div id="pdf-progress-bar-wrap"><div id="pdf-progress-bar"></div></div>
+  <div id="pdf-status">Procesando página 1...</div>
+  <div style="font-size:11px;color:#aaa;margin-top:4px;">No cierres esta pestaña</div>
+</div>
+
+<script>
+// ── Convierte una imagen remota a base64 usando un proxy con CORS ──
+// Esto soluciona el problema de imágenes en blanco en el PDF: el <img> se ve
+// bien en pantalla porque mostrar una imagen NO requiere CORS, pero
+// html2canvas SÍ necesita CORS para leer los píxeles. Si el bucket S3 no
+// manda esos permisos, la imagen queda en blanco en el PDF aunque se vea
+// bien en pantalla. Al convertir a base64 vía proxy, evitamos el problema.
+const _cacheBase64 = new Map();
+
+function urlAProxy(url) {
+  // images.weserv.nl: proxy de imágenes gratuito que sí manda headers CORS
+  const limpio = url.replace(/^https?:\/\//, '');
+  return `https://images.weserv.nl/?url=${encodeURIComponent(limpio)}&output=jpg&q=82&bg=white`;
+}
+
+function imagenABase64(url) {
+  if (_cacheBase64.has(url)) return Promise.resolve(_cacheBase64.get(url));
+  return new Promise((resolve) => {
+    const proxyUrl = urlAProxy(url);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 7000); // máx 7s por imagen
+
+    fetch(proxyUrl, { mode: 'cors', signal: controller.signal })
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.blob(); })
+      .then(blob => {
+        clearTimeout(timeoutId);
+        const reader = new FileReader();
+        reader.onload = () => { _cacheBase64.set(url, reader.result); resolve(reader.result); };
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(blob);
+      })
+      .catch(() => { clearTimeout(timeoutId); resolve(null); }); // Timeout o error → seguimos sin romper nada
+  });
+}
+
+// Convierte las imágenes de UN contenedor (ej: una sola página) a base64
+async function convertirImagenesDeContenedor(contenedor) {
+  const imgs = Array.from(contenedor.querySelectorAll('img[src^="http"]'));
+  if (!imgs.length) return;
+  const LOTE = 6;
+  for (let i = 0; i < imgs.length; i += LOTE) {
+    const grupo = imgs.slice(i, i + LOTE);
+    await Promise.all(grupo.map(async (img) => {
+      const original = img.getAttribute('data-url-original') || img.src;
+      const b64 = await imagenABase64(original);
+      if (b64) img.src = b64;
+    }));
+  }
+}
+
+// Convierte TODAS las imágenes del documento a base64 antes de capturar el PDF
+async function convertirImagenesABase64(status) {
+  const imgs = Array.from(document.querySelectorAll('.page img[src^="http"]'));
+  const total = imgs.length;
+  let listas = 0;
+  if (total === 0) return;
+
+  // Procesar en lotes para no saturar la red de golpe
+  const LOTE = 6;
+  for (let i = 0; i < imgs.length; i += LOTE) {
+    const grupo = imgs.slice(i, i + LOTE);
+    await Promise.all(grupo.map(async (img) => {
+      const original = img.getAttribute('data-url-original') || img.src;
+      const b64 = await imagenABase64(original);
+      if (b64) img.src = b64; // Si falla, deja la imagen como estaba (se intentará igual)
+      listas++;
+      if (status) status.textContent = `Optimizando imágenes para el PDF: ${listas}/${total}...`;
+    }));
+  }
+}
+
+// ── EXPORTAR PDF OPTIMIZADO ─────────────────────────────────────────
+async function exportarPDF() {
+  const paginas = document.querySelectorAll('.page');
+  if (!paginas.length) { alert('Primero genera el catálogo cargando tu CSV.'); return; }
+
+  // Verificar que las librerías están cargadas
+  if (!window.jspdf || !window.html2canvas) {
+    alert('⚠️ Las librerías PDF no cargaron. Verifica tu conexión a internet y recarga la página.');
+    return;
+  }
+
+  const overlay = document.getElementById('pdf-overlay');
+  const barFill = document.getElementById('pdf-progress-bar');
+  const status  = document.getElementById('pdf-status');
+
+  overlay.style.display = 'flex';
+  status.textContent = 'Iniciando...';
+  barFill.style.width = '0%';
+
+  await new Promise(r => setTimeout(r, 100)); // dar tiempo al navegador a mostrar el overlay
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+
+    const TOTAL = paginas.length;
+    status.textContent = `Página 0 de ${TOTAL}`;
+
+    for (let i = 0; i < TOTAL; i++) {
+      const pct = Math.round((i / TOTAL) * 100);
+      barFill.style.width = pct + '%';
+      status.textContent = `Página ${i + 1} de ${TOTAL}`;
+
+      // Convertir SOLO las imágenes de esta página (no las 1000+ de golpe)
+      await convertirImagenesDeContenedor(paginas[i]);
+
+      await new Promise(r => setTimeout(r, 50)); // pausa para no congelar
+
+      let canvas;
+      try {
+        canvas = await html2canvas(paginas[i], {
+          scale: 1.5,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          imageTimeout: 15000,
+        });
+      } catch(e) {
+        console.warn('Error en página ' + (i+1) + ':', e);
+        status.textContent = `Página ${i+1} falló, continuando...`;
+        await new Promise(r => setTimeout(r, 300));
+        continue;
+      }
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.55);
+      if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+
+      // Liberar memoria
+      canvas.width = 0;
+      canvas.height = 0;
+    }
+
+    barFill.style.width = '100%';
+    status.textContent = 'Guardando...';
+    await new Promise(r => setTimeout(r, 300));
+
+    pdf.save('Catalogo_DuranTools_2026.pdf');
+
+  } catch(err) {
+    console.error('Error generando PDF:', err);
+    alert('❌ Error al generar el PDF: ' + err.message + '\n\nRevisa la consola (F12) para más detalles.');
+  } finally {
+    overlay.style.display = 'none';
+  }
+}
+
+// Mostrar botón cuando hay catálogo generado
+const _genOrig = window.generarCatalogo;
+if (typeof _genOrig === 'function') {
+  // El botón se muestra después de generarCatalogo — pero esa función se define
+  // más abajo en el script, así que usamos un observer.
+}
+// Mostrar botón solo cuando hay páginas de catálogo generadas
+function actualizarBotonPDF() {
+  const btn = document.getElementById('btn-exportar-pdf');
+  if (!btn) return;
+  // Hay catálogo cuando existen .page Y ya no está el selector de precio
+  const paginas = document.querySelectorAll('.page');
+  const haySelector = document.getElementById('btnPrecio');
+  const hayCatalogo = paginas.length > 0 && !haySelector;
+  btn.style.display = hayCatalogo ? 'flex' : 'none';
+}
+
+const _observer = new MutationObserver(actualizarBotonPDF);
+_observer.observe(document.body, { childList: true, subtree: true });
+// También ocultar al cargar
+actualizarBotonPDF();
+</script>
+</body>
+</html>
